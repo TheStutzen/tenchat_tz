@@ -14,6 +14,13 @@ export class UsersService {
   @InjectRepository(User)
   private readonly userRepositiry: Repository<User>
 
+  /**
+   * Create user
+   *
+   * @param {String} createUserDto.name = name User
+   * @param {String} createUserDto.email = email User
+   * @returns {User} = object user
+   */
   async create(createUserDto: CreateUserDto): Promise<User> {
     const emailCheck = await this.userRepositiry
       .createQueryBuilder('user')
@@ -31,6 +38,12 @@ export class UsersService {
     return user
   }
 
+  /**
+   * Find user
+   *
+   * @param Number id = id user
+   * @returns {User} = object user
+   */
   async findOne(id: number): Promise<User> {
     const user = await this.userRepositiry
       .createQueryBuilder('user')
@@ -44,6 +57,15 @@ export class UsersService {
     throw new NotFoundException('Пользователя не существует')
   }
 
+  /**
+   * Update user
+   *
+   * @param Number id = id user
+   * @param {String} updateUserDto.name = otional name User
+   * @param {String} updateUserDto.email = otional email User
+   * @param {Number} updateUserDto.balance = otional balance User
+   * @returns {User} = object user
+   */
   async update(id: number, updateUserDto: UpdateUserDto) {
     const hasUpdate = await this.userRepositiry.update(id, updateUserDto)
 
@@ -56,6 +78,12 @@ export class UsersService {
     throw new BadRequestException('Обновление не удалось')
   }
 
+  /**
+   * Remove user
+   *
+   * @param Number id = id user
+   * @returns Пользователь успешно удален
+   */
   async remove(id: number) {
     const hasRemove = await this.userRepositiry.delete(id)
 
@@ -66,6 +94,13 @@ export class UsersService {
     throw new BadRequestException('Удаление не удалось')
   }
 
+  /**
+   * Added balance user
+   *
+   * @param Number id = id user
+   * @param {Number} params.balance = user balance
+   * @returns Пользователь успешно удален
+   */
   async deposit(id: number, params: DepositUserDto) {
     const user = await this.findOne(id)
 
@@ -79,6 +114,13 @@ export class UsersService {
     return user
   }
 
+  /**
+   * Deduct user balance
+   *
+   * @param Number id = id user
+   * @param {Number} params.balance = user balance
+   * @returns Пользователь успешно удален
+   */
   async deduct(id: number, params: DepositUserDto) {
     const user = await this.findOne(id)
 

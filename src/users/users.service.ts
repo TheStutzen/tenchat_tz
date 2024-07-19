@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
@@ -60,6 +61,7 @@ export class UsersService {
   /**
    * Update user
    *
+   * Я знаю что можно обновить поле balance используя этот endpoint
    * @param Number id = id user
    * @param {String} updateUserDto.name = otional name User
    * @param {String} updateUserDto.email = otional email User
@@ -132,7 +134,7 @@ export class UsersService {
         return { message: 'Успешно списан баланс', balance: hasUpdate.balance }
       }
 
-      return 'Списание не удалось. Деньги кончились'
+      throw new HttpException('Списание не удалось. Деньги кончились', 402)
     }
 
     return user

@@ -1,17 +1,23 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { ConfigService } from '@nestjs/config'
-import { join } from 'path'
+import { DataSource, DataSourceOptions } from 'typeorm'
 
-export const typeOrmConfig = async (
-  configService: ConfigService,
-): Promise<TypeOrmModuleOptions> => ({
+export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  host: configService.get('DB_HOST'),
-  port: configService.get('DB_PORT'),
-  username: configService.get('DB_USERNAME'),
-  password: configService.get('DB_PASSWORD'),
-  database: configService.get('DB_NAME'),
+  host: process.env.DB_HOST,
+  port: +process.env.DB_PORT,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  migrationsRun: true,
+  migrationsTableName: 'migrations',
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  synchronize: true, // Устанавливайте в false в production (для миграции)
-  logging: false, // Добавлено для логирования
-})
+  migrations: [__dirname + '/../db/migrations/*{.ts,.js}'],
+  synchronize: false, // Устанавливайте в false в production (для миграции)
+  logging: true, // Добавлено для логирования
+  schema: 'public',
+}
+
+const dataSource = new DataSource(dataSourceOptions)
+// dataSource.runMigrations({ transaction: 'all' })
+// console.log(dataSource)
+
+export default dataSource

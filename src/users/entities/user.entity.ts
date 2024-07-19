@@ -1,5 +1,11 @@
-import { Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
+@Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number
@@ -10,7 +16,7 @@ export class User {
   @Column()
   email: string
 
-  @Column()
+  @Column('decimal', { precision: 10, scale: 4, default: 0 })
   balance: number
 
   @CreateDateColumn()

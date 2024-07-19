@@ -16,7 +16,7 @@ export class User {
   @Column()
   email: string
 
-  @Column('decimal', { precision: 10, scale: 4, default: 0 })
+  @Column({ type: 'int', default: 0 })
   balance: number
 
   @CreateDateColumn()

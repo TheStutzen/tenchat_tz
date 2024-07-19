@@ -16,8 +16,8 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const emailCheck = await this.userRepositiry
-      .createQueryBuilder('User')
-      .where('User.email = :email', { email: createUserDto.email })
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email: createUserDto.email })
       .getOne()
 
     if (emailCheck) {
@@ -33,8 +33,8 @@ export class UsersService {
 
   async findOne(id: number): Promise<User> {
     const user = await this.userRepositiry
-      .createQueryBuilder('User')
-      .where('User.id = :id', { id })
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
       .getOne()
 
     if (user) {
@@ -70,9 +70,10 @@ export class UsersService {
     const user = await this.findOne(id)
 
     if (user) {
-      const hasUpdate = await this.update(id, params)
+      const amount = user.balance + params.balance
+      const hasUpdate = await this.update(id, { balance: amount })
 
-      return { message: 'Успешно пополнен баланс', hasUpdate }
+      return { message: 'Успешно пополнен баланс', balance: hasUpdate.balance }
     }
 
     return user
@@ -82,13 +83,14 @@ export class UsersService {
     const user = await this.findOne(id)
 
     if (user) {
-      if (user.balance > params.balance) {
-        const hasUpdate = await this.update(id, params)
+      if (user.balance >= params.balance) {
+        const deduct = user.balance - params.balance
+        const hasUpdate = await this.update(id, { balance: deduct })
 
-        return { message: 'Успешно списан баланс', hasUpdate }
+        return { message: 'Успешно списан баланс', balance: hasUpdate.balance }
       }
 
-      return 'Списание не удалось'
+      return 'Списание не удалось. Деньги кончились'
     }
 
     return user

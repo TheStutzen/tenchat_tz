@@ -65,7 +65,7 @@ export class UsersController {
     return this.usersService.remove(id)
   }
 
-  @Patch('/balance/deposit')
+  @Patch('/balance/deposit/:id')
   @ApiOperation({ description: 'Пополнение баланса пользователя' })
   @ApiResponse({
     status: 200,
@@ -77,7 +77,7 @@ export class UsersController {
     return this.usersService.deposit(id, updateUserDto)
   }
 
-  @Patch('/balance/deduct')
+  @Patch('/balance/deduct/:id')
   @ApiOperation({ description: 'Списание баланса пользователя' })
   @ApiResponse({
     status: 200,

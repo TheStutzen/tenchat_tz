@@ -13,5 +13,5 @@ export const typeOrmConfig = async (
   database: configService.get('DB_NAME'),
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   synchronize: true, // Устанавливайте в false в production (для миграции)
-  logging: true, // Добавлено для логирования
+  logging: false, // Добавлено для логирования
 })

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsString } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateUserDto {
   @ApiProperty({
@@ -7,7 +7,7 @@ export class CreateUserDto {
     required: true,
     nullable: true,
   })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Поле name не заполнено' })
   @IsString({ message: 'Поле должно быть строкой' })
   name: string
 
@@ -16,7 +16,8 @@ export class CreateUserDto {
     required: true,
     nullable: true,
   })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Поле email не заполнено' })
+  @IsEmail({}, { message: 'Невалидная почта' })
   @IsString({ message: 'Поле должно быть строкой' })
   email: string
 }

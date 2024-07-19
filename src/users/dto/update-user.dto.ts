@@ -4,7 +4,7 @@ import { IsNotEmpty, IsNumber } from 'class-validator'
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({
-    type: String,
+    type: Number,
     required: true,
     nullable: true,
   })
@@ -15,7 +15,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
 export class DepositUserDto {
   @ApiProperty({
-    type: String,
+    type: Number,
     required: true,
     nullable: true,
   })
